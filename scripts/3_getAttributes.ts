@@ -41,7 +41,7 @@ async function main() {
     );
   } else {
     for (let i = 0; i < numTeamNFTs; i++) {
-      console.log(i, i);
+      console.log(i, "_", i);
     }
     ranks.forEach((rank, idx) => {
       const tokenId = idx + numTeamNFTs;
