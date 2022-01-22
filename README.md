@@ -15,7 +15,7 @@ npx hardhat node
 npx hardhat help
 REPORT_GAS=true npx hardhat test
 npx hardhat coverage
-npx hardhat run scripts/1_deployGhostVRF.ts --network mainnet
+npx hardhat run --network mainnet scripts/1_deployGhostVRF.ts > log deploy.log 
 ```
 
 
@@ -25,7 +25,7 @@ Copy the .env.example file to a file named .env, and then edit it to fill in the
 Enter your Etherscan API key, your mainnet node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. 
 
 ```shell
-npx hardhat run --network mainnet scripts/2_runGhostVRF.ts
+npx hardhat run --network mainnet scripts/2_runGhostVRF.ts > log/runVRF.log
 ```
 
 # Get Attributes

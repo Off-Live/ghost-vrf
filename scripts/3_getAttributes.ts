@@ -7,6 +7,7 @@ dotenv.config();
 async function main() {
   const GhostVRF = await ethers.getContractFactory("GhostVRF");
   const ghostVRF = await GhostVRF.attach(process.env.CONTRACT_ADDRESS || "");
+  console.log(`Attached to the contract: ${process.env.CONTRACT_ADDRESS}`);
 
   const totalSupply = 10000;
   const numTeamNFTs = 21;
@@ -17,9 +18,6 @@ async function main() {
     });
     return arr.map((x) => sorted.indexOf(x));
   }
-
-  // const ranking = (arr: BigNumber[]) =>
-  //   arr.map((x, y, z) => z.filter((w) => w > x).length + 1);
 
   const randomNumbers: BigNumber[] = [];
   let offset = numTeamNFTs;
