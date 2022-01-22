@@ -65,7 +65,7 @@ contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
      * as that would give miners/VRF operators latitude about which VRF response arrives first.
      * @dev You must review your implementation details with extreme care.
      *
-     * @param _roller address of the roller
+     * @return bytes32
      */
     function rollDice() public onlyOwner returns (bytes32) {
         require(LINK.balanceOf(address(this)) >= s_fee, "Not enough LINK to pay fee");
@@ -91,6 +91,8 @@ contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
      */
     function fulfillRandomness(bytes32 _requestId, uint256 _randomness) internal override {
         result = _randomness % BIG_PRIME;
+        if (result == 0)
+            result += 1;
         emit DiceLanded(_requestId, _randomness);
     }
 
