@@ -23,7 +23,8 @@ async function main() {
     process.env.LINK_CA || "",
     process.env.KEY_HASH || "",
     process.env.LINK_FEE || "",
-    10000
+    10000,
+    process.env.IPFS_BASE_URI || ""
   );
 
   await ghostVRF.deployed();

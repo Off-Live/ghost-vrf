@@ -5,7 +5,8 @@ dotenv.config();
 
 async function main() {
   const GhostVRF = await ethers.getContractFactory("GhostVRF");
-  const ghostVRF = await GhostVRF.attach(process.env.GHOSTVRF_CA || "");
+  const ghostVRF = await GhostVRF.attach(process.env.CONTRACT_ADDRESS || "");
+  console.log(`Attached to the contract: ${process.env.CONTRACT_ADDRESS}`);
 
   await ghostVRF.rollDice();
   console.log("Run VRF!");

@@ -4,25 +4,13 @@ pragma solidity 0.8.7;
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 
-/**
- * @notice A Chainlink VRF consumer which uses randomness to mimic the rolling
- * of a 20 sided die
- * @dev This is only an example implementation and not necessarily suitable for mainnet.
- */
-
-/**
- * Request testnet LINK and ETH here: https://faucets.chain.link/
- * Find information on LINK Token Contracts and get the latest ETH and LINK faucets here: https://docs.chain.link/docs/link-token-contracts/
- */
-
 contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
     uint256 private constant BIG_PRIME = 200560490131;
 
     bytes32 private s_keyHash;
     uint256 private s_fee;
+    string private ipfsBaseUri;
     uint256 internal GHOST_SUPPLY;
-//    mapping(bytes32 => address) private s_rollers;
-//    mapping(address => uint256) private s_results;
 
     bytes32 private requestId;
     uint256 private result;
@@ -51,11 +39,12 @@ contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
      * @param _fee uint256 fee to pay the VRF oracle
      * @param _totalSupply uint256 total supply of ghosts
      */
-    constructor(address _vrfCoordinator, address _link, bytes32 _keyHash, uint256 _fee, uint256 _totalSupply)
+    constructor(address _vrfCoordinator, address _link, bytes32 _keyHash, uint256 _fee, uint256 _totalSupply, string memory _ipfsBaseUri)
     VRFConsumerBase(_vrfCoordinator, _link)
     {
         setKeyHash(_keyHash);
         setFee(_fee);
+        setIpfsBaseUri(_ipfsBaseUri);
         GHOST_SUPPLY = _totalSupply;
     }
 
@@ -107,6 +96,12 @@ contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
         return (result * (_tokenId + 1)) % BIG_PRIME;
     }
 
+    /**
+     * @notice Get the random number of token with id tokenId
+     * @param _offset uint256
+     * @param _limit uint256
+     * @return array of random number as a uint256[]
+     */
     function getBatchRandomNumbers(uint256 _offset, uint256 _limit) public view returns (uint256[] memory) {
         require(_offset + _limit <= GHOST_SUPPLY, "Exceeded total supply");
         uint256[] memory numbers = new uint[](_limit);
@@ -162,5 +157,18 @@ contract GhostVRF is VRFConsumerBase, ConfirmedOwner(msg.sender) {
      */
     function fee() public view returns (uint256) {
         return s_fee;
+    }
+
+    /**
+     * @notice Set the base URI of ipfs for provenance.
+     *
+     * @param _baseUri string
+     */
+    function setIpfsBaseUri(string memory _baseUri) private onlyOwner {
+        ipfsBaseUri = _baseUri;
+    }
+
+    function getIpfsBaseUri() public view returns (string memory) {
+        return ipfsBaseUri;
     }
 }
