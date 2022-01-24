@@ -4,6 +4,14 @@ import { ethers } from "hardhat";
 dotenv.config();
 
 async function main() {
+  const [deployer] = await ethers.getSigners();
+  console.log("Connected to the account:", deployer.address);
+  console.log(
+    "Account balance:",
+    ethers.utils.formatEther(await deployer.getBalance()),
+    "ETH"
+  );
+
   const GhostVRF = await ethers.getContractFactory("GhostVRF");
   const ghostVRF = await GhostVRF.attach(process.env.CONTRACT_ADDRESS || "");
   console.log(`Attached to the contract: ${process.env.CONTRACT_ADDRESS}`);

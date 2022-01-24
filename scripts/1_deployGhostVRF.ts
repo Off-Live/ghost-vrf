@@ -16,6 +16,14 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
+  console.log(
+    "Account balance:",
+    ethers.utils.formatEther(await deployer.getBalance()),
+    "ETH"
+  );
+
   // We get the contract to deploy
   const GhostVRF = await ethers.getContractFactory("GhostVRF");
   const ghostVRF = await GhostVRF.deploy(
